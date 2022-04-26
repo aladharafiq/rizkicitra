@@ -1,0 +1,34 @@
+---
+title: 'Tailwind Config File'
+description: 'A configuration for my personal use of tailwind.'
+tech: 'Tailwind CSS'
+date: '04/08/2022'
+---
+
+```js
+/* eslint-disable @typescript-eslint/no-var-requires */
+const colors = require('tailwindcss/colors')
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
+/** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx,mdx}'],
+  darkMode: 'class', // or 'media' or 'class' or false
+  theme: {
+    extend: {
+      fontFamily: {
+        primary: ['"Inter"', ...fontFamily.sans]
+      },
+      colors: {
+        // primary: some primary color - e.g: blue
+        // secondary: secondary color -  e.g: violet
+        // main: main color, used for black and white theme
+      }
+    }
+  },
+  variants: {},
+  plugins: [
+    //   require('@tailwindcss/typography')
+  ]
+}
+```

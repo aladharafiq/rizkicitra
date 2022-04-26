@@ -1,0 +1,79 @@
+---
+title: 'MDX Helpers'
+description: 'Read MDX files on given directory.'
+tech: 'Markdown'
+date: '04/26/2022'
+---
+
+## Setting Up
+
+Let's say we build a blog with Next.js and MDX to manage our blog.
+
+### Using Modules
+
+```ts
+// using promise based file system
+import fs from 'fs/promisess'
+import matter from 'gray-matter'
+import path from 'path'
+```
+
+### Get A List Of MDX file name
+
+```ts
+export type GetListMDXFiles = (base: string, path: string) => Promise<{basePath: string; files: Array<string>}>
+
+// getListOfMDXFiles
+export const getListMDXFiles: GetListMDXFiles = (base, path) => {
+    // in case you want to pass without or with '/'
+    const prefixedPath = path.startsWith('/') ? path : `/${path}`
+
+    // base path, if 'src' passed to base, path would be:
+    // current-project/src
+    const basePath = path.join(process.cwd(), base)
+
+    const dir = await fs.readdir(base + prefixedPath)
+
+    // return only list of mdx
+    return {
+        basePath,
+        files: dir.filter((d) => /\.mdx?$/.test(d))
+    }
+}
+```
+
+### Read All MDX Files
+
+```ts
+export interface BlogsProps {
+  title: string
+  date: string
+  description: string
+  tags: Array<string>
+}
+
+export type GetBlogReturnValue = Promise<{ frontmatter: BlogsProps; content: string }>
+
+// getAllBlog, returning an array of blog data
+export const getBlog = async (): GetBlogReturnValue => {
+  const { basePath, files } = await getListMDXFiles('src/contents', '/blog')
+
+  // this would return a Promise
+  const promises = files.map(async (d) => {
+    const dir = path.join(basePath + d) // e.g result: current-project/src/content/file-name.mdx
+    // read each single file
+    const fileContent = await fs.readFile(dir, 'utf8')
+
+    // parse with gray mattter, data is for the frontmatter while content are the body
+    const { data, content } = matter(fileContent)
+
+    return {
+      // provide as types for frontmatter property:
+      frontmatter: data as BlogsProps,
+      content
+    }
+  })
+
+  return await Promise.all(promises)
+}
+```

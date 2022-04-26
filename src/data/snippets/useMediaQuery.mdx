@@ -1,0 +1,42 @@
+---
+title: 'useMediaQuery()'
+description: 'Match to a certain media query and return boolean.'
+tech: 'React'
+date: '04/29/2022'
+---
+
+```tsx
+import { useEffect, useState } from 'react'
+
+const useMediaQuery = (query: string) => {
+  // check if the query is match with the given parameter
+  const isMatch = (query: string) => {
+    if (typeof window !== 'undefined') {
+      // this will return true
+      return window.matchMedia(query).matches
+    }
+    return false
+  }
+
+  const [matches, setMatches] = useState(isMatch(query))
+
+  // calllback for media query's event listener
+  const handleChange = () => setMatches(isMatch(query))
+
+  // we run side effect whenever media query has change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia(query)
+      handleChange()
+      mediaQuery.addEventListener('change', handleChange)
+
+      return () => mediaQuery.removeEventListener('change', handleChange)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query])
+
+  return matches
+}
+
+export default useMediaQuery
+```

@@ -1,0 +1,13 @@
+---
+title: 'Supabase Retrieve'
+description: 'Retrieve data from Supabase Database.'
+tech: 'Supabase'
+date: '04/20/2022'
+---
+
+```ts
+const { data, error } = await supabase
+  .from('messages')
+  .select('*, users!inner(*)')
+  .eq('users.username', 'Jane')
+```

@@ -12,6 +12,10 @@ const APP_ROUTE = [
     name: 'Blog'
   },
   {
+    path: '/snippets',
+    name: 'Snippets'
+  },
+  {
     path: '/about',
     name: 'About Me'
   }

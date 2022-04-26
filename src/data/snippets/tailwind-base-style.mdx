@@ -1,0 +1,38 @@
+---
+title: 'Tailwind Base Style'
+description: 'Base Style for Tailwind CSS.'
+tech: 'Tailwind CSS'
+date: '04/14/2022'
+---
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl font-bold md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-bold md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg font-bold md:text-xl;
+  }
+
+  body {
+    @apply font-primary antialiased;
+  }
+
+  .layout {
+    @apply mx-auto w-[90%] max-w-2xl md:w-full;
+  }
+}
+```
